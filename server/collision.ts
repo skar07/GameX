@@ -1,0 +1,110 @@
+type collidableObjectType = {
+  position: { x: number; y: number };
+  boundary: number;
+  hitbox: number;
+  area: number;
+};
+type CollidableObjectsPopulaceType = {
+  mapId: string;
+  collidableObjectsArray: collidableObjectType[];
+};
+type UsersToMapRelationType = {
+  userId: string;
+  mapsOfTheUser: CollidableObjectsPopulaceType[];
+}; // 1 User : many maps
+
+class collidableObject<T extends collidableObjectType> {
+  position: T["position"];
+  boundary: T["boundary"];
+  hitbox: T["hitbox"];
+  area: T["area"];
+  constructor(props: T) {
+    this.position = props.position;
+    this.boundary = props.boundary;
+    this.hitbox = props.hitbox;
+    this.area = props.area;
+  }
+  getCollidableObject() {
+    const collidablesObject = {
+      positionOfObject: this.position,
+      boundaryBox: this.boundary,
+      objectHitBox: this.hitbox,
+      objectArea: this.area,
+    };
+    return { collidingObject: JSON.stringify(collidablesObject) };
+  }
+  setCollidableObject(newObject: T) {
+    this.position = newObject.position;
+    this.boundary = newObject.boundary;
+    this.hitbox = newObject.hitbox;
+    this.area = newObject.area;
+    const collidablesObject = {
+      positionOfObject: this.position,
+      boundaryBox: this.boundary,
+      objectHitBox: this.hitbox,
+      objectArea: this.area,
+    };
+    return collidablesObject;
+  }
+}
+
+class CollisionObjectPopulace<T extends CollidableObjectsPopulaceType> {
+  mapId: T["mapId"];
+  collidableObjectsArray: T["collidableObjectsArray"];
+  constructor(props: T) {
+    this.mapId = props.mapId;
+    this.collidableObjectsArray = props.collidableObjectsArray;
+  }
+  getCollidableObjectsPopulace() {
+    return this.collidableObjectsArray;
+  }
+  setCollidableObjectsPopulace(
+    newCollisionObject: T["collidableObjectsArray"]
+  ) {
+    this.collidableObjectsArray = newCollisionObject;
+    return this.collidableObjectsArray;
+  }
+  createCollidableObjectPopulace(
+    mapId: T["mapId"],
+    collisionObjects: T["collidableObjectsArray"]
+  ): T["collidableObjectsArray"] {
+    this.mapId = mapId;
+    this.collidableObjectsArray = new Array(collisionObjects.length)
+    for (let i = 0; i < collisionObjects.length; i++) {
+        this.collidableObjectsArray[i] = collisionObjects[i]
+    }
+    return this.collidableObjectsArray;
+  }
+}
+class UsersToMapRelation<T extends UsersToMapRelationType>{
+    userId: T["userId"];
+    mapsOfTheUser: T["mapsOfTheUser"]
+    constructor(props: T){
+        this.userId = props.userId;
+        this.mapsOfTheUser = props.mapsOfTheUser;
+    }
+    getUsersToMapRelation(){
+        return{
+            "userId": this.userId, "maps of the user": this.mapsOfTheUser
+        }
+    }
+    setUsersToMapRelation(incomingUserId: T["userId"], newMaps:T["mapsOfTheUser"]){
+        if(this.userId === incomingUserId){
+            return this.mapsOfTheUser = newMaps;
+        }
+        throw new Error(`404 UserId not found`)
+    }
+    addMapforUser(givenUserId: T["userId"], mapToBeAdded: CollidableObjectsPopulaceType){
+        if(this.userId === givenUserId){
+            this.mapsOfTheUser.push(mapToBeAdded);
+            return this.mapsOfTheUser;
+        }
+        throw new Error(`404 UserId not found`)
+    }
+    deleteMapForUser(givenUserId: T["userId"], mapId: CollidableObjectsPopulaceType["mapId"]){
+        if(this.userId === givenUserId){
+            this.mapsOfTheUser = this.mapsOfTheUser.filter((id) => mapId !== id.mapId)
+        }
+        return this.mapsOfTheUser;
+    }
+}
