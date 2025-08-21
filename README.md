@@ -1,8 +1,8 @@
-# WebEngineStudio — A Visual Web‑Native Game Engine Platform
+# GameX — A Visual Web‑Native Game Engine Platform
 
 ## Overview
 
-**WebEngineStudio** is an experimental full-stack platform that redefines how multiplayer browser-based games are created. Built with TypeScript, Three.js, and WebSocket, it merges real-time engine needs with visual design interfaces and eventual AI-assisted schema generation.
+**GameX** is an experimental full-stack platform that redefines how multiplayer browser-based games are created. Built with TypeScript, Three.js, and WebSocket, it merges real-time engine needs with visual design interfaces and eventual AI-assisted schema generation.
 
 ---
 
