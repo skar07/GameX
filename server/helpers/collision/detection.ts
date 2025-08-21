@@ -7,8 +7,8 @@
  * @returns {boolean} Tells if the two entities are colliding or not
  */
 
-type AlgorithmType = "AABB" | "Circle" | "SAT" | "SweptAABB";
-type Shape =
+export type AlgorithmType = "AABB" | "Circle" | "SAT" | "SweptAABB";
+export type Shape =
   | {
       kind: "rect";
       x: number;
@@ -29,11 +29,7 @@ type Shape =
       dt?: number;
     };
 
-interface ITwoDimensionCollisionDetection {
-  entity1: Readonly<Shape>;
-  entity2: Readonly<Shape>;
-  algorithmType?: AlgorithmType;
-}
+
 
 function algorithmAABB(
   entity1: Readonly<Extract<Shape, { kind: "rect" }>>,
@@ -51,10 +47,11 @@ function algorithmCircleCollision(
   entity1: Readonly<Extract<Shape, { kind: "circle" }>>,
   entity2: Readonly<Extract<Shape, { kind: "circle" }>>
 ): boolean {
-  const dx = entity1.x + entity1.radius - (entity2.x + entity2.radius);
-  const dy = entity1.y + entity1.radius - (entity2.y + entity2.radius);
-  const distance = Math.sqrt(dx * dx + dy * dy);
-  return distance < entity1.radius + entity2.radius;
+    const dx = entity1.x - entity2.x;
+    const dy = entity1.y - entity2.y;
+    const distanceSq = dx * dx + dy * dy;
+    const radiusSum = entity1.radius + entity2.radius;
+    return distanceSq < radiusSum * radiusSum;
 }
 
 function algorithmSAT(
@@ -77,11 +74,11 @@ function algorithmSweptAABB(
   );
 }
 //API/Interface for using collision detection
-export function TwoDimensionCollisionDetection({
-  entity1,
-  entity2,
-  algorithmType,
-}: ITwoDimensionCollisionDetection): boolean {
+export function TwoDimensionCollisionDetection(
+  entity1: Readonly<Shape>,
+  entity2: Readonly<Shape>,
+  algorithmType: AlgorithmType,
+ ): boolean {
   switch (entity1.kind, entity2.kind, algorithmType) {
     case "AABB":
       return (
