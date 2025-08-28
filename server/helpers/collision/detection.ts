@@ -29,8 +29,6 @@ export type Shape =
       dt?: number;
     };
 
-
-
 function algorithmAABB(
   entity1: Readonly<Extract<Shape, { kind: "rect" }>>,
   entity2: Readonly<Extract<Shape, { kind: "rect" }>>
@@ -47,11 +45,11 @@ function algorithmCircleCollision(
   entity1: Readonly<Extract<Shape, { kind: "circle" }>>,
   entity2: Readonly<Extract<Shape, { kind: "circle" }>>
 ): boolean {
-    const dx = entity1.x - entity2.x;
-    const dy = entity1.y - entity2.y;
-    const distanceSq = dx * dx + dy * dy;
-    const radiusSum = entity1.radius + entity2.radius;
-    return distanceSq < radiusSum * radiusSum;
+  const dx = entity1.x - entity2.x;
+  const dy = entity1.y - entity2.y;
+  const distanceSq = dx * dx + dy * dy;
+  const radiusSum = entity1.radius + entity2.radius;
+  return distanceSq < radiusSum * radiusSum;
 }
 
 function algorithmSAT(
@@ -77,21 +75,19 @@ function algorithmSweptAABB(
 export function TwoDimensionCollisionDetection(
   entity1: Readonly<Shape>,
   entity2: Readonly<Shape>,
-  algorithmType: AlgorithmType,
- ): boolean {
-  switch (entity1.kind, entity2.kind, algorithmType) {
+  algorithmType: AlgorithmType
+): boolean {
+  switch (algorithmType) {
     case "AABB":
-      return (
-        entity1.kind === "rect" &&
-        entity2.kind === "rect" &&
-        algorithmAABB(entity1, entity2)
-      );
+      if (entity1.kind === "rect" && entity2.kind === "rect") {
+        return algorithmAABB(entity1, entity2);
+      }
+      return false;
     case "Circle":
-      return (
-        entity1.kind === "circle" &&
-        entity2.kind === "circle" &&
-        algorithmCircleCollision(entity1, entity2)
-      );
+      if (entity1.kind === "circle" && entity2.kind === "circle") {
+        return algorithmCircleCollision(entity1, entity2);
+      }
+      return false;
     case "SAT":
       return algorithmSAT(entity1, entity2);
     case "SweptAABB":
