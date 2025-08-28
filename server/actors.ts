@@ -1,4 +1,7 @@
+import { EntityMovement, MovementType } from "./helpers/movement";
+
 type PlayerType = {
+  id: string;
   position: {
     x: number;
     y: number;
@@ -15,14 +18,22 @@ type PlayerEntityType = PlayerType & {
   actions: Record<keyof actionType, () => object>;
 };
 class Player<T extends PlayerType> {
-  position: {};
+  id: string;
+  position: { x: number; y: number };
   type: string;
   avatar: string;
-
-  constructor({ position = { x: 0, y: 0 }, type, avatar }: PlayerType) {
+  playerMovement = new EntityMovement();
+  constructor({ id, position = { x: 0, y: 0 }, type, avatar }: PlayerType) {
+    this.id = id;
     this.position = position;
     this.type = type;
     this.avatar = avatar;
+  }
+  getPlayerId() {
+    return this.id;
+  }
+  setPlayerId(id: string) {
+    return (this.id = id);
   }
   getPosition() {
     return this.position;
@@ -30,19 +41,22 @@ class Player<T extends PlayerType> {
   setPosition(newPosition: PlayerType["position"]) {
     return (this.position = newPosition);
   }
+  handlePlayerMovement(direction: MovementType) {
+    return this.playerMovement.executeTransition(direction, this.position)
+  }
 }
 
 class PlayerEntity extends Player<PlayerEntityType> {
   clothing: PlayerEntityType["clothing"];
   inventory: PlayerEntityType["inventory"];
   actions: PlayerEntityType["actions"];
-  private constructor(
-    { position, type, avatar }: PlayerType,
+  protected constructor(
+    { id, position, type, avatar }: PlayerType,
     clothing: PlayerEntityType["clothing"],
     inventory: PlayerEntityType["inventory"],
     actions: PlayerEntityType["actions"]
   ) {
-    super({ position, type, avatar });
+    super({ id, position, type, avatar });
     this.clothing = clothing;
     this.inventory = inventory;
     this.actions = actions;
@@ -66,5 +80,41 @@ class PlayerEntity extends Player<PlayerEntityType> {
         ? this.inventory.set(item, currentAmount - amountToRemove)
         : this.inventory.delete(item);
     }
+  }
+}
+
+class PlayerManager extends PlayerEntity {
+  allPlayers: Map<string, PlayerEntity>;
+  constructor(props: PlayerEntityType, allPlayers: Map<string, PlayerEntity>) {
+    super(props, props.clothing, props.inventory, props.actions);
+    this.allPlayers = allPlayers;
+  }
+  getAllPlayers() {
+    return this.allPlayers;
+  }
+  setAllPlayesr(newAllPlayers: Map<string, PlayerEntity>) {
+    // useful for moving players from one map to another, say map level progress like in Roblox
+    return (this.allPlayers = newAllPlayers);
+  }
+  createPlayer(props: PlayerEntityType) {
+    if (!this.allPlayers.has(props.id)) {
+      const newPlayer = new PlayerEntity(
+        props,
+        props.clothing,
+        props.inventory,
+        props.actions
+      );
+      this.allPlayers.set(newPlayer.id, newPlayer);
+    }
+  }
+  addPlayer(newPlayer: PlayerEntity) {
+    return this.allPlayers.set(newPlayer.id, newPlayer);
+  }
+  removePlayer(playerToRemove: PlayerEntity) {
+    return this.allPlayers.delete(playerToRemove.id);
+  }
+  removeAllPlayers() {
+    this.allPlayers.clear();
+    return JSON.stringify({ message: `All players removed` });
   }
 }

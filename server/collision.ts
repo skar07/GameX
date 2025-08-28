@@ -1,10 +1,10 @@
-type collidableObjectType = {
-  position: { x: number; y: number };
-  boundary: number;
-  hitbox: number;
-  area: number;
+export type collidableObjectType = {
+  position: { x: number; y: number, z?: number };
+  velocity: number;
+  force: number;
+  mass: number;
 };
-type CollidableObjectsPopulaceType = {
+export type CollidableObjectsPopulaceType = {
   mapId: string;
   collidableObjectsArray: collidableObjectType[];
 };
@@ -15,34 +15,34 @@ type UsersToMapRelationType = {
 
 class collidableObject<T extends collidableObjectType> {
   position: T["position"];
-  boundary: T["boundary"];
-  hitbox: T["hitbox"];
-  area: T["area"];
+  velocity: T["velocity"];
+  force: T["force"];
+  mass: T["mass"];
   constructor(props: T) {
     this.position = props.position;
-    this.boundary = props.boundary;
-    this.hitbox = props.hitbox;
-    this.area = props.area;
+    this.velocity = props.velocity;
+    this.force = props.force;
+    this.mass = props.mass;
   }
   getCollidableObject() {
     const collidablesObject = {
       positionOfObject: this.position,
-      boundaryBox: this.boundary,
-      objectHitBox: this.hitbox,
-      objectArea: this.area,
+      velocityOfObject: this.velocity,
+      forceOfObject: this.force,
+      objectMass: this.mass,
     };
     return { collidingObject: JSON.stringify(collidablesObject) };
   }
   setCollidableObject(newObject: T) {
     this.position = newObject.position;
-    this.boundary = newObject.boundary;
-    this.hitbox = newObject.hitbox;
-    this.area = newObject.area;
+    this.velocity = newObject.velocity;
+    this.force = newObject.force;
+    this.mass = newObject.mass;
     const collidablesObject = {
       positionOfObject: this.position,
-      boundaryBox: this.boundary,
-      objectHitBox: this.hitbox,
-      objectArea: this.area,
+      velocityOfObject: this.velocity,
+      forceOfObject: this.force,
+      objectMass: this.mass
     };
     return collidablesObject;
   }
