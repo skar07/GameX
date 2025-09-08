@@ -21,11 +21,10 @@ app.use(
   app.get('/api/game-state', (req, res) => {
     res.json({ players: `none` });
   });
-  
-// app.use('/engine', express.static(path.join(__dirname, "../../dist")));
+
 
 const server = app.listen(PORT, () => {
-    console.log(`Game server running on http://localhost:${PORT}`);
+    console.log(`Game server running on ${PORT}`);
 });
 const wss = new WebSocketServer({server})
 const socketManager = new SocketManager();
