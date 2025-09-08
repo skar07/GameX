@@ -1,6 +1,6 @@
-import { EntityMovement, MovementType } from "./helpers/movement";
+import { EntityMovement, MovementType } from "../physics/movement.js";
 
-type PlayerType = {
+export type PlayerType = {
   id: string;
   position: {
     x: number;
@@ -46,7 +46,7 @@ class Player<T extends PlayerType> {
   }
 }
 
-class PlayerEntity extends Player<PlayerEntityType> {
+export class PlayerEntity extends Player<PlayerEntityType> {
   clothing: PlayerEntityType["clothing"];
   inventory: PlayerEntityType["inventory"];
   actions: PlayerEntityType["actions"];

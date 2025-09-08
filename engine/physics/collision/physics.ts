@@ -1,4 +1,3 @@
-//velocities, forces, rigidbodies, constraints.
 import { collidableObjectType } from "../../collision.js"
 class PhysicsWorld {
     private collsionObjects: collidableObjectType[];

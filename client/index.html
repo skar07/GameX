@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>WebGL Demo</title>
+    <script type="module">
+      import { GameEngine } from "./src/index.js";
+
+      const canvas = document.querySelector("#gameCanvas");
+      const engine = new GameEngine(canvas);
+      engine.test();
+    </script>
+  </head>
+
+  <body>
+    <canvas id="gameCanvas" width="640" height="480"></canvas>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "target": "esnext",
+      "module": "esnext",           // critical: ensures `export` stays `export`
+      "moduleResolution": "bundler",
+      "outDir": "dist",
+      "rootDir": ".",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true
+    },
+    "include": ["./**/*"],
+    "exclude": ["dist"]
+  }
+  

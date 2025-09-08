@@ -1,12 +1,11 @@
-//integrates the others  into a single interface (e.g., CollisionEngine class).
 
-import { Shape, TwoDimensionCollisionDetection, AlgorithmType } from "./detection";
+import { Shape, TwoDimensionCollisionDetection, AlgorithmType } from "./detection.js";
 
 type CollisionEngineType = {
     twoDimensionCollision: () => any;
 }
 
-class CollisionEngine<T extends CollisionEngineType> {
+export class CollisionEngine<T extends CollisionEngineType> {
     entity1: Shape;
     entity2: Shape;
     algorithm: AlgorithmType;
@@ -15,7 +14,7 @@ class CollisionEngine<T extends CollisionEngineType> {
     this.entity2 = arg1;
     this.algorithm = algorithm;
   }
-  twoDimensionaCollision(){
+  twoDimensionalCollision(){
     return TwoDimensionCollisionDetection(this.entity1, this.entity2, this.algorithm)
   }
 }
