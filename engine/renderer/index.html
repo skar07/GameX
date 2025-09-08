@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>WebGL Demo</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "gl-matrix": "../node_modules/gl-matrix/esm/index.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import { GameEngine } from "./dist/game_engine/index.js";
+      const canvas = document.querySelector("#gameCanvas");
+      const engine = new GameEngine(canvas);
+      engine.test();
+    </script>
+  </head>
+  <body>
+    <canvas id="gameCanvas" width="640" height="480"><p>hello</p></canvas>
+  </body>
+</html>
