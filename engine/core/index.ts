@@ -9,10 +9,11 @@ const app = express();
 const PORT =  8080;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(
-    "/",
-    express.static(path.join(__dirname, "../../renderer-dist"), { index: "index.html" })
-  );
+// app.use(
+//     "/",
+//     express.static(path.join(__dirname, "../../renderer-dist"), { index: "index.html" })
+//   );
+
 
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok' });
